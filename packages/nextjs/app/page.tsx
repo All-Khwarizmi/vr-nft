@@ -1,7 +1,28 @@
+"use client";
+
+import { useEffect } from "react";
 import Image from "next/image";
 import type { NextPage } from "next";
+import { useAccount, useReadContract } from "wagmi";
+import deployedContracts from "~~/contracts/deployedContracts";
 
 const Home: NextPage = () => {
+  const { address } = useAccount();
+  const { data, error, isLoading } = useReadContract({
+    abi: deployedContracts[11155111].YourCollectible.abi,
+    address: "0xd887e94143Fd4Bb97A3aF24EC5A51877aB5e1fa3",
+    functionName: "name",
+  });
+
+  useEffect(() => {
+    console.log(address);
+  }, [address]);
+  useEffect(() => {
+    console.log(data);
+    if (error) console.error(error);
+    if (isLoading) console.log("loading");
+  }, [data]);
+
   return (
     <div className="flex items-center flex-col flex-grow pt-10">
       <div className="px-5 w-[90%] md:w-[75%]">
